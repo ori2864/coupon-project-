@@ -76,7 +76,8 @@ public class CouponDBDAO implements CouponDAO {
                 Integer categoryID = results.getInt(3);
                 String title = results.getString(4);
                 String description = results.getString(5);
-                //todo date columns
+                //todo date columns - Date.mysql
+
                 Date startDate = results.getDate(6);
                 Date endDate = results.getDate(7);
                 Integer amount = results.getInt(8);

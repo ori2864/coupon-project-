@@ -75,5 +75,5 @@ public class ConnectionPool {
             //notify that we got back a connection from a user
             connections.notify();
         }
-    }
+}
 }
