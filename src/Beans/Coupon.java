@@ -6,17 +6,17 @@ import java.util.Date;
 public class Coupon {
     private Integer id;
     private Integer companyID;
-    //todo category category?????????
+
     private Integer categoryID;
     private String title;
     private String description;
-    private Date startDate;
-    private Date endDate;
+    private java.sql.Date startDate;
+    private java.sql.Date endDate;
     private Integer amount;
     private Double price;
     private String image;
 
-    public Coupon(Integer companyID, int categoryID, String title, String description, Date startDate, Date endDate, Integer amount, Double price, String image) {
+    public Coupon(Integer companyID, int categoryID, String title, String description, java.sql.Date startDate, java.sql.Date endDate, Integer amount, Double price, String image) {
         this.companyID = companyID;
         this.categoryID = categoryID;
         this.title = title;
@@ -72,7 +72,7 @@ public class Coupon {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(java.sql.Date startDate) {
         this.startDate = startDate;
     }
 
@@ -80,7 +80,7 @@ public class Coupon {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(java.sql.Date endDate) {
         this.endDate = endDate;
     }
 

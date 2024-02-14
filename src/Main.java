@@ -34,6 +34,6 @@ public class Main {
            //     ,12,30.01,"jpgekek");
         //ArrayList<Coupon>couponArrayList=new CouponDBDAO().getAllCoupons();
         //couponArrayList.forEach(System.out::println);
-        System.out.println(new CouponDBDAO().getOneCoupon(2));
+        System.out.println(new CouponDBDAO().getOneCoupon(3));
     }
 }

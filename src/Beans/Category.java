@@ -1,9 +1,9 @@
 package Beans;
 
 public enum Category {
-    food(1),electricity(2),restaurant(3),vacation(4);
+    food(1,"food"),electricity(2, "electricity"),restaurant(3, "restaurant"),vacation(4, "vacation+");
 
-    Category(int i) {
+    Category(int i, String title) {
 
     }
 }

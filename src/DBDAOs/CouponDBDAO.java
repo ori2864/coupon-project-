@@ -8,10 +8,10 @@ import DAOs.CustomerDAO;
 import SQLcommands.companyCommands;
 import SQLcommands.couponCommands;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,11 +25,8 @@ public class CouponDBDAO implements CouponDAO {
         params.put(2, coupon.getCategoryID());
         params.put(3, coupon.getTitle());
         params.put(4, coupon.getDescription());
-        params.put(5,"2023-12-06");
-        params.put(6,"2024-01-07");
-        //TODO date columns????
-        //params.put(5, coupon.getStartDate().toString());
-        //params.put(6, coupon.getEndDate().toString());
+        params.put(5, coupon.getStartDate().toString());
+        params.put(6, coupon.getEndDate().toString());
         params.put(7, coupon.getAmount());
         params.put(8, coupon.getPrice());
         params.put(9, coupon.getImage());
@@ -45,11 +42,8 @@ public class CouponDBDAO implements CouponDAO {
         params.put(2, coupon.getCategoryID());
         params.put(3, coupon.getTitle());
         params.put(4, coupon.getDescription());
-        params.put(5,"2023-12-06");
-        params.put(6,"2024-01-07");
-        //TODO date columns????
-        //params.put(5, coupon.getStartDate().toString());
-        //params.put(6, coupon.getEndDate().toString());
+        params.put(5, coupon.getStartDate().toString());
+        params.put(6, coupon.getEndDate().toString());
         params.put(7, coupon.getAmount());
         params.put(8, coupon.getPrice());
         params.put(9, coupon.getImage());
@@ -76,10 +70,8 @@ public class CouponDBDAO implements CouponDAO {
                 Integer categoryID = results.getInt(3);
                 String title = results.getString(4);
                 String description = results.getString(5);
-                //todo date columns - Date.mysql
-
-                Date startDate = results.getDate(6);
-                Date endDate = results.getDate(7);
+                java.sql.Date startDate = results.getDate(6);
+                java.sql.Date endDate = results.getDate(7);
                 Integer amount = results.getInt(8);
                 Double price = results.getDouble(9);
                 String image = results.getString(10);
@@ -103,8 +95,7 @@ public class CouponDBDAO implements CouponDAO {
                 Integer categoryID = results.getInt(3);
                 String title = results.getString(4);
                 String description = results.getString(5);
-                //todo date columns
-                Date startDate = results.getDate(6);
+                java.sql.Date startDate = results.getDate(6);
                 Date endDate = results.getDate(7);
                 Integer amount = results.getInt(8);
                 Double price = results.getDouble(9);
