@@ -1,10 +1,8 @@
 package DBDAOs;
 
-import Beans.Company;
 import Beans.Coupon;
 import Beans.Customer;
 import DAOs.CustomerDAO;
-import SQLcommands.companyCommands;
 import SQLcommands.customerCommands;
 
 import java.sql.ResultSet;
@@ -12,22 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import Exceptions.sqlException;
 
 public class CustomerDBDAO implements CustomerDAO {
     @Override
-    public Boolean isCustomerExists(String email, String password) throws sqlException {
+    public Boolean isCustomerExists(String email, String password) throws SQLException, SQLException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1, email);
         params.put(2, password);
-        ResultSet result= DButils.runQueryForResult(customerCommands.IS_CUSTOMER_EXISTS, params);
         try {
+            ResultSet result= DButils.runQueryForResult(customerCommands.IS_CUSTOMER_EXISTS, params);
             while (result.next()) {
                 return result.getInt("isExists") == 1;
             }
         } catch (SQLException err){
-            throw new sqlException(err.getMessage());
+            throw new SQLException(err.getMessage());
         }
+
+
         return false;
 
     }

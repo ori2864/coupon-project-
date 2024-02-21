@@ -5,6 +5,7 @@ import Connections.ConnectionPool;
 
 import java.sql.*;
 import java.util.Map;
+//@todo proper exception handling
 
 public class DButils {
     public static boolean runQuery(String sql) {
@@ -23,12 +24,11 @@ public class DButils {
             //prepare our sql (String) and convert it to a language that mysql will understand
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            //run statment
+            //run statement
             preparedStatement.execute();
             return true;
         } catch (InterruptedException | SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
+            throw new RuntimeException(e);
         } finally {
             ConnectionPool.getInstance().returnConnection(connection);
         }
@@ -53,12 +53,11 @@ public class DButils {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,index);
 
-            //run statment
+            //run statement
             preparedStatement.execute();
             return true;
         } catch (InterruptedException | SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
+            throw new RuntimeException(e);
         } finally {
             ConnectionPool.getInstance().returnConnection(connection);
         }
@@ -162,12 +161,8 @@ public class DButils {
             });
             preparedStatement.execute();
             return true;
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-            return false;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
+        } catch (InterruptedException | SQLException e) {
+            throw new RuntimeException(e);
         } finally {
             ConnectionPool.getInstance().returnConnection(connection);
         }
@@ -203,12 +198,9 @@ public class DButils {
 
             System.out.println(preparedStatement);
             return preparedStatement.executeQuery();
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | SQLException e) {
             throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    finally {
+        } finally {
             ConnectionPool.getInstance().returnConnection(connection);
         }
     }

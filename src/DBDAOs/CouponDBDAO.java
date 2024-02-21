@@ -7,6 +7,7 @@ import DAOs.CouponDAO;
 import DAOs.CustomerDAO;
 import SQLcommands.companyCommands;
 import SQLcommands.couponCommands;
+import SQLcommands.cvcCommands;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -61,11 +62,12 @@ public class CouponDBDAO implements CouponDAO {
     @Override
     public ArrayList<Coupon> getAllCoupons() {
         ArrayList<Coupon> list = new ArrayList<>();
-        ResultSet results = DButils.runQueryForResult(couponCommands.GET_ALL_COUPONS, new HashMap<>());
         try {
+            ResultSet results = DButils.runQueryForResult(couponCommands.GET_ALL_COUPONS, new HashMap<>());
             //company_id`,`category_id`,`title`,`description`," +
             //            "`start_date`,`end_date`,`amount`,`price`,`image
             while (results.next()) {
+                Integer id=results.getInt(1);
                 Integer companyID = results.getInt(2);
                 Integer categoryID = results.getInt(3);
                 String title = results.getString(4);
@@ -75,7 +77,7 @@ public class CouponDBDAO implements CouponDAO {
                 Integer amount = results.getInt(8);
                 Double price = results.getDouble(9);
                 String image = results.getString(10);
-                list.add(new Coupon(companyID,categoryID,title,description,startDate,endDate,amount,price,image));
+                list.add(new Coupon(id,companyID,categoryID,title,description,startDate,endDate,amount,price,image));
             }
             return list;
         } catch (SQLException e) {
@@ -91,6 +93,7 @@ public class CouponDBDAO implements CouponDAO {
         ResultSet results = DButils.runQueryForResult(couponCommands.GET_ONE_COUPON,params);
         try {
             while (results.next()) {
+                Integer id = results.getInt(1);
                 Integer companyID = results.getInt(2);
                 Integer categoryID = results.getInt(3);
                 String title = results.getString(4);
@@ -100,7 +103,7 @@ public class CouponDBDAO implements CouponDAO {
                 Integer amount = results.getInt(8);
                 Double price = results.getDouble(9);
                 String image = results.getString(10);
-                c= new Coupon(companyID,categoryID,title,description,
+                c= new Coupon(id,companyID,categoryID,title,description,
                         startDate,endDate,amount,price,image);
             }
             return c;
@@ -111,11 +114,24 @@ public class CouponDBDAO implements CouponDAO {
 
     @Override
     public void addCouponPurchase(int customerID, int couponID) {
-
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, customerID);
+        params.put(2, couponID);
+        params.put(3, couponID);
+        Boolean result = DButils.runQuery(cvcCommands.ADD_CVC_COUPON_PURCHASE,params);
+        //todo not good fix this ask zeev
+        if (result){
+            params.clear();
+            params.put(1,couponID);
+            DButils.runQuery(couponCommands.COUPON_PURCHASE_AMOUNT_UPDATE,params);
+        }
     }
 
     @Override
     public void deleteCouponPurchase(int customerID, int couponID) {
-
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, customerID);
+        params.put(2, couponID);
+        DButils.runQuery(cvcCommands.DELETE_CVC_COUPON_PURCHASE,params);
     }
 }

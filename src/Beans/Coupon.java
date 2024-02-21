@@ -1,8 +1,10 @@
 package Beans;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 @NoArgsConstructor
+@AllArgsConstructor
 public class Coupon {
     private Integer id;
     private Integer companyID;

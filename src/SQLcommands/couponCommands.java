@@ -16,8 +16,10 @@ public static final String UPDATE_COUPON="UPDATE `coupon`.`coupons` " +
     public static final String GET_ALL_COUPONS="SELECT * FROM `coupon`.`coupons`;";
     public static final String GET_ONE_COUPON="SELECT * FROM `coupon`.`coupons` WHERE `id`=?;";
     //TODO ADD&DELETE COUPON PURCHASES
-    public static final String ADD_COUPON_PURCHASE="???????";
-
-    public static final String DELETE_COUPON_PURCHASE="???????";
+    public static final String COUPON_PURCHASE_AMOUNT_UPDATE=
+            "UPDATE `coupon`.`coupons` SET `amount` =`amount`-1 WHERE (`id` = ?);";
+    public static final String GET_COMPANY_COUPONS = "SELECT * FROM coupon.coupons WHERE `company_id` = ?";
+    public static final String GET_COUPONS_BY_CATEGORY = "SELECT * FROM `coupon`.`coupons` WHERE `category_id` = ?";
+    public static final String GET_COUPONS_BELOW_PRICE = "SELECT * FROM `coupon`.`coupons` WHERE `price` < ?";
 
 }

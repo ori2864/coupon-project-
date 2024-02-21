@@ -10,11 +10,13 @@ public class companyCommands {
     public static final String DELETE_COMPANY = "DELETE FROM `coupon`.`companies` WHERE `id`=?";
     //1 index
     public static final String UPDATE_COMPANY = "UPDATE `coupon`.`companies` " +
-            "SET `name` = ?, `email` = ?, `password` = ?" +
+            "SET  `email` = ?, `password` = ?" +
             " WHERE (`id` = ?);";
-    //3 values 1 index
+    //2 values 1 index
     public static final String GET_ALL_COMPANIES = "SELECT * FROM `coupon`.`companies`;";
     public static final String GET_ONE_COMPANY = "SELECT * FROM `coupon`.`companies` WHERE `id`=?;";
     //1 value
+    public static final String GET_COMPANY_ID = "SELECT `id` FROM `coupon`.`companies` WHERE `email`=? AND `password` = ?";
+
 }
 

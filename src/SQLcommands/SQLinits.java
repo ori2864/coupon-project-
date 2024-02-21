@@ -41,12 +41,18 @@ public class SQLinits {
             "  `password` varchar(45) NOT NULL," +
             "  PRIMARY KEY (`id`)," +
             "  UNIQUE KEY `email_UNIQUE` (`email`)";
-    public static final String CREATE_TABLE_CUSTOMERS_VS_COUPONS="CREATE TABLE `customers_vs_coupons` (" +
+    public static final String CREATE_TABLE_CUSTOMERS_VS_COUPONS=
+            "CREATE TABLE `customers_vs_coupons` (" +
             "  `customer_id` int NOT NULL," +
             "  `coupon_id` int NOT NULL," +
             "  PRIMARY KEY (`customer_id`,`coupon_id`)," +
-            "  KEY `cupon_id_key_idx` (`coupon_id`)," +
-            "  CONSTRAINT `cupon_id_key` FOREIGN KEY (`coupon_id`) REFERENCES `coupons` (`id`)," +
-            "  CONSTRAINT `customer_id_key` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`)" +
-            ") ";
+            "  KEY `coupon_id_key_idx` (`coupon_id`)," +
+            "  CONSTRAINT `coupon_id_key` FOREIGN KEY (`coupon_id`)" +
+                    " REFERENCES `coupons` (`id`) " +
+                    "ON DELETE CASCADE " +
+                    "ON UPDATE CASCADE," +
+            "  CONSTRAINT `customer_id_key` FOREIGN KEY (`customer_id`)" +
+                    " REFERENCES `customers` (`id`) " +
+                    "ON DELETE CASCADE " +
+                    "ON UPDATE CASCADE";
 }

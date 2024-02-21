@@ -1,57 +1,61 @@
 package DBDAOs;
 
+import Beans.Category;
 import Beans.Company;
+import Beans.Coupon;
 import DAOs.CompanyDAO;
-import Exceptions.sqlException;
 import SQLcommands.companyCommands;
-import SQLcommands.customerCommands;
+import SQLcommands.couponCommands;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+//@todo exceptions
 public class CompanyDBDAO implements CompanyDAO {
     @Override
-    public boolean isCompanyExists(String email, String password) throws sqlException {
+    public boolean isCompanyExists(String email, String password) throws SQLException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1, email);
         params.put(2, password);
-        ResultSet result= DButils.runQueryForResult(companyCommands.IS_COMPANY_EXISTS, params);
         try {
+            ResultSet result= DButils.runQueryForResult(companyCommands.IS_COMPANY_EXISTS, params);
             while (result.next()) {
                 return result.getInt("isExists") == 1;
             }
         } catch (SQLException err){
-            throw new sqlException(err.getMessage());
+            throw new SQLException(err.getMessage());
         }
         return false;
     }
 
     @Override
-    public void addCompany(Company company) {
+    public void addCompany(Company company) throws SQLException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1, company.getName());
         params.put(2, company.getEmail());
         params.put(3, company.getPassword());
         DButils.runQuery(companyCommands.ADD_COMPANY, params);
     }
-
     @Override
     public void updateCompany(Company company) {
         Map<Integer, Object> params = new HashMap<>();
-        params.put(1, company.getName());
-        params.put(2, company.getEmail());
-        params.put(3, company.getPassword());
-        params.put(4, company.getId());
+        params.put(1, company.getEmail());
+        params.put(2, company.getPassword());
+        params.put(3, company.getId());
         DButils.runQuery(companyCommands.UPDATE_COMPANY, params);
 
     }
 
     @Override
     public void deleteCompany(int companyID) {
-        DButils.runQueryWithIndex(companyCommands.DELETE_COMPANY, companyID);
+        try {
+            DButils.runQueryWithIndex(companyCommands.DELETE_COMPANY, companyID);
+        }//@todo exception
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -92,7 +96,95 @@ public class CompanyDBDAO implements CompanyDAO {
                 throw new RuntimeException(e);
             }
         }
+        public int getCompanyID (String email, String password) throws SQLException {
+            Map<Integer, Object> params = new HashMap<>();
+            params.put(1, email);
+            params.put(2, password);
+            try {
+                ResultSet result= DButils.runQueryForResult(companyCommands.GET_COMPANY_ID, params);
+                while (result.next()) {
+                    return result.getInt("id");
+                }
+            } catch (SQLException err){
+                throw new SQLException(err.getMessage());
+            }
+            return -1;
+        }
+        public ArrayList<Coupon> getCompanyCoupons(int companyID){
+            ArrayList<Coupon>coupons=new ArrayList<>();
+            Map<Integer, Object> params = new HashMap<>();
+            params.put(1, companyID);
+            try {
+                ResultSet results= DButils.runQueryForResult(couponCommands.GET_COMPANY_COUPONS, params);
+                    while (results.next()) {
+                        Integer id = results.getInt(1);
+                        Integer companyID2 = results.getInt(2);
+                        Integer categoryID = results.getInt(3);
+                        String title = results.getString(4);
+                        String description = results.getString(5);
+                        java.sql.Date startDate = results.getDate(6);
+                        java.sql.Date endDate = results.getDate(7);
+                        Integer amount = results.getInt(8);
+                        Double price = results.getDouble(9);
+                        String image = results.getString(10);
+                        coupons.add(new Coupon(id,companyID,categoryID,title,description,startDate,endDate,amount,price,image));
+                    }
+                    return coupons;
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
 
+        }
+    @Override
+    public ArrayList<Coupon> getCompanyCoupons(Category category) {
+        ArrayList<Coupon>coupons=new ArrayList<>();
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, category.ordinal());
+        try {
+            ResultSet results= DButils.runQueryForResult(couponCommands.GET_COUPONS_BY_CATEGORY, params);
+            while (results.next()) {
+                Integer id = results.getInt(1);
+                Integer companyID = results.getInt(2);
+                Integer categoryID = results.getInt(3);
+                String title = results.getString(4);
+                String description = results.getString(5);
+                java.sql.Date startDate = results.getDate(6);
+                java.sql.Date endDate = results.getDate(7);
+                Integer amount = results.getInt(8);
+                Double price = results.getDouble(9);
+                String image = results.getString(10);
+                coupons.add(new Coupon(id,companyID,category.ordinal(),title,description,startDate,endDate,amount,price,image));
+            }
+            return coupons;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    @Override
+    public ArrayList<Coupon> getCompanyCoupons(double maxPrice) {
+        ArrayList<Coupon>coupons=new ArrayList<>();
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1, maxPrice);
+        try {
+            ResultSet results= DButils.runQueryForResult(couponCommands.GET_COUPONS_BELOW_PRICE, params);
+            while (results.next()) {
+                Integer id = results.getInt(1);
+                Integer companyID = results.getInt(2);
+                Integer categoryID = results.getInt(3);
+                String title = results.getString(4);
+                String description = results.getString(5);
+                java.sql.Date startDate = results.getDate(6);
+                java.sql.Date endDate = results.getDate(7);
+                Integer amount = results.getInt(8);
+                Double price = results.getDouble(9);
+                String image = results.getString(10);
+                coupons.add(new Coupon(id,companyID,categoryID,title,description,startDate,endDate,amount,price,image));
+            }
+            return coupons;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 
