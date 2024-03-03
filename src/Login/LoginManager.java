@@ -22,40 +22,50 @@ public class LoginManager {
                 if (loginManager==null)
                     loginManager=new LoginManager();
             }
-        }    
+        }
      return loginManager;
     }
-    public ClientFacade login(String email, String password, ClientType clientType){
+    public ClientFacade login(String email, String password, ClientType clientType) throws sqlCustomException {
         ClientFacade facade =null;
         switch (clientType){
+
+
             case Company : {
                 try {
+                    //check login->boolean query
                   if(new CompanyFacade().login(email,password)) {
-                      facade= new CompanyFacade(new CompanyDBDAO().getCompanyID(email, password));
+                      //saving facade with the relevant id
+                      facade= new CompanyFacade(new CompanyDBDAO().getCompanyByLogin(email, password).getId());
                   }
-                } catch (SQLException | sqlCustomException e) {
-                    throw new RuntimeException(e);
+                  //if login fails->company facade will throw custom exception
+                } catch (SQLException  e) {
+                    System.out.println("an error has occurred - "+e.getMessage());
                 }
             }break;
+
+
             case Customer : {
                 try {
+                    //check login->boolean query
                     if(new CustomerFacade().login(email,password)) {
-                        facade= new CustomerFacade();
+                        facade= new CustomerFacade(new CustomerDBDAO().getCustomerByLogin(email,password).getId());
+                        //saving facade with the relevant id
                     }
-                } catch (SQLException | sqlCustomException e) {
-                    throw new RuntimeException(e);
+                    //if login fails->customer facade will throw custom exception
+                } catch (SQLException e) {
+                    System.out.println("an error has occurred - "+e.getMessage());
                 }
             }break;
+
+
             case Administrator : {
-                try {
                     if(new AdminFacade().login(email,password)) {
                         facade= new AdminFacade();
                     }
-                } catch (sqlCustomException e) {
-                    throw new RuntimeException(e);
-                }
             }break;
         }
+
+
         return facade;
     }
 }

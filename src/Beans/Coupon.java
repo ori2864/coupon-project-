@@ -1,15 +1,17 @@
 package Beans;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Coupon {
     private Integer id;
     private Integer companyID;
 
-    private Integer categoryID;
+    private Category category;
     private String title;
     private String description;
     private java.sql.Date startDate;
@@ -18,9 +20,9 @@ public class Coupon {
     private Double price;
     private String image;
 
-    public Coupon(Integer companyID, int categoryID, String title, String description, java.sql.Date startDate, java.sql.Date endDate, Integer amount, Double price, String image) {
+    public Coupon(Integer companyID, Category category, String title, String description, java.sql.Date startDate, java.sql.Date endDate, Integer amount, Double price, String image) {
         this.companyID = companyID;
-        this.categoryID = categoryID;
+        this.category = category;
         this.title = title;
         this.description = description;
         this.startDate = startDate;
@@ -46,12 +48,12 @@ public class Coupon {
         this.companyID = companyID;
     }
 
-    public Integer getCategoryID() {
-        return categoryID;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryID(Integer categoryID) {
-        this.categoryID = categoryID;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getTitle() {
@@ -115,7 +117,7 @@ public class Coupon {
         return "Coupon{" +
                 "id=" + id +
                 ", companyID=" + companyID +
-                ", categoryID=" + categoryID +
+                ", categoryID=" + category +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", startDate=" + startDate +
